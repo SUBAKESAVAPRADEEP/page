@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pagination Example</title>
+  <style>
+    .pagination {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .pagination li {
+      display: inline-block;
+      margin: 0 5px;
+    }
+
+    .pagination li a {
+      display: block;
+      padding: 8px 12px;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      color: #332;
+    }
+
+    .pagination li a.active {
+      background-color: #333;
+      color:#1ff;
+    }
+
+    .pagination .prev-btn,
+    .pagination .next-btn {
+      display: inline-block;
+      padding: 8px 12px;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      color: #677;
+    }
+  </style>
+</head>
+<body>
+  <div id="pagination"></div>
+
+  <script >
+    // Create pagination elements using DOM manipulation
+    var pagination = document.getElementById('pagination');
+
+    var totalPages = 10;
+    var currentPage = 1;
+
+    function goToPage(page) {
+      currentPage = page;
+      updatePagination();
+      // Perform actions to load data for the selected page
+      console.log('Navigating to page', currentPage);
+    }
+
+    function updatePagination() {
+      pagination.innerHTML = '';
+
+      var paginationList = document.createElement('ul');
+      paginationList.className = 'pagination';
+
+      var prevButton = document.createElement('a');
+      prevButton.href = '#';
+      prevButton.className = 'prev-btn';
+      prevButton.textContent = 'Previous';
+      prevButton.addEventListener('click', function() {
+        if (currentPage > 1) {
+          goToPage(currentPage - 1);
+        }
+      });
+
+      var nextButton = document.createElement('a');
+      nextButton.href = '#';
+      nextButton.className = 'next-btn';
+      nextButton.textContent = 'Next';
+      nextButton.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+          goToPage(currentPage + 1);
+        }
+      });
+
+      pagination.appendChild(prevButton);
+
+      for (var i = 1; i <= totalPages; i++) {
+        var listItem = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = '#';
+        link.textContent = i;
+
+        if (i === currentPage) {
+          link.className = 'active';
+        }
+
+        // Attach event listener to handle page navigation
+        link.addEventListener('click', (function(page) {
+          return function() {
+            goToPage(page);
+          };
+        })(i));
+
+        listItem.appendChild(link);
+        paginationList.appendChild(listItem);
+      }
+
+      pagination.appendChild(paginationList);
+      pagination.appendChild(nextButton);
+    }
+
+    // Initial pagination creation
+    updatePagination();
+  </script>
+
+  <script src="https://app.zenclass.in/sheets/v1/ja/zen/suite/bundle.js"></script>
+</body>
+</html>
